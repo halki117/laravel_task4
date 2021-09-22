@@ -29,4 +29,17 @@ class PostsController extends Controller
         $post->save();
         return redirect(route('posts.index'));
     }
+
+    public function edit($id) {
+        $post = Post::find($id);
+        return view('posts.edit')->with('post', $post);
+    }
+
+    public function update(PostRequest $request, $id) {
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->update();
+        return redirect(route('posts.index'));
+    }
 }
