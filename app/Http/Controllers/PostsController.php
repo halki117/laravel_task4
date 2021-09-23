@@ -42,4 +42,13 @@ class PostsController extends Controller
         $post->update();
         return redirect(route('posts.index'));
     }
+
+    public function destroy($id) {
+        $post = Post::find($id);
+        if (Auth::id() !== $post->user->id){
+            return redirect(route('posts.index'))->with('error', '許可されていない操作です');
+        }
+        $post->delete();
+        return redirect(route('posts.index'))->with('success', '投稿を削除しました');
+    }
 }

@@ -27,6 +27,19 @@
 @endsection
 
 @section('content')
+
+  @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+  @endif
+
+  @if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+  @endif
+
   @foreach ($posts as $post)
     <div class="row justify-content-center text-center">
       <div class="post mb-1 p-5 w-100">
@@ -37,7 +50,12 @@
           <p class="mr-2 mt-3">投稿者: {{ $post->user->name }}</p>
           @if ($post->user->id === Auth::id())
             <button class="btn btn-primary mr-2" onclick="location.href='{{ route('posts.edit', $post->id) }}' ">編集する</button>
-            <button class="btn btn-danger mr-2">削除する</button>
+            <form action="{{ route('posts.destroy', $post->id) }}" method="post" class="mr-2">
+              @csrf
+              {{ method_field('delete') }}
+              <input  type="submit" class="btn btn-danger py-3" value="削除する" onclick="return confirm('削除しますか？')">
+            </form>
+            
           @endif
           <i class="far fa-heart pt-1 mt-3">x1</i>
         </div>
