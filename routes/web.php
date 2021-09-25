@@ -20,3 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('posts', 'PostsController');
+
+Route::prefix('posts')->group(function(){
+    Route::post('{post}/likes', 'LikesController@store')->name('likes');
+    Route::delete('{post}/unlikes', 'LikesController@destroy')->name('unlikes');
+});
